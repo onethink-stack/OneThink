@@ -5,18 +5,17 @@ from datetime import datetime
 import streamlit as st  # Adicionamos este para ler os segredos da nuvem
 import google.generativeai as genai
 
-# --- CONFIGURAÇÃO HÍBRIDA DA IA (LOCAL VS NUVEM) ---
+# --- CONFIGURAÇÃO UNIVERSAL DA IA ---
 try:
-    # Tenta ler do Secrets do Streamlit (quando o site estiver online)
     chave = st.secrets["GEMINI_API_KEY"]
 except:
-    # Se der erro (no VS Code), ele usa esta chave manual abaixo
-    # Dica: No futuro, apague a chave daqui se o repositório for público!
     chave = "AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY"
 
 genai.configure(api_key=chave)
-model = genai.GenerativeModel('gemini-pro')
-# --------------------------------------------------
+
+# Usando o nome técnico completo que evita o erro 404
+model = genai.GenerativeModel(model_name='models/gemini-1.5-flash')
+# -----------------------------------------------------------------------------------
 
 def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
     # O "Contrato" de conduta da IA
