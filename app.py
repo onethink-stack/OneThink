@@ -1,5 +1,6 @@
 import streamlit as st
-from main import analisar_unidade, VICIOS, SINERGIAS
+# Importamos a nova função de IA que você colocou no main.py
+from main import analisar_unidade, VICIOS, SINERGIAS, gerar_analise_ia
 
 # Configuração da página do site
 st.set_page_config(page_title="ONETHINK - Onisciência", page_icon="🧠", layout="centered")
@@ -33,23 +34,23 @@ if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
     if not unidade_id or not vicios_selecionados:
         st.error("⚠️ Por favor, preencha o ID e selecione ao menos um vício.")
     else:
-        # Calculando para exibição no site
+        # 1. CÁLCULO DE SCORE E SINERGIAS
         soma_base = sum(VICIOS[v]['peso'] for v in vicios_selecionados)
-        sinergias_nomes = []
+        sinergias_encontradas = []
         vicios_set = set(vicios_selecionados)
         dano_final = soma_base
 
         for v_comb, info in SINERGIAS.items():
             if set(v_comb).issubset(vicios_set):
-                sinergias_nomes.append(info)
+                sinergias_encontradas.append(info)
                 dano_final *= info['mult']
 
         score = round(min(dano_final, 10.0), 2)
         
-        # Salvando no banco de dados local
+        # 2. SALVAMENTO LOCAL
         analisar_unidade(unidade_id, vicios_selecionados)
 
-        # Exibição dos Resultados no Site
+        # 3. EXIBIÇÃO DO SCORE
         st.success(f"### Score Final: {score} / 10.0")
         
         if score >= 7.0:
@@ -57,8 +58,20 @@ if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
         elif score >= 4.0:
             st.info("⚠️ ALERTA: Atrofia em estágio intermediário.")
         
-        if sinergias_nomes:
+        if sinergias_encontradas:
             st.write("#### ⚠️ Sinergias Críticas:")
-            for s in sinergias_nomes:
+            for s in sinergias_encontradas:
                 st.markdown(f"- **{s['nome']}**: Antivírus Sugerido: `{s['av']}`")
-                
+
+        # 4. O PULO DO GATO: CHAMADA DA IA
+        st.write("---")
+        with st.spinner('🔮 O Oráculo OneThink está processando o destino desta unidade...'):
+            # Pegamos o Elo do primeiro vício marcado para dar contexto
+            elo_dominante = VICIOS[vicios_selecionados[0]]['elo']
+            
+            # Chamamos a função de IA que configuramos no main.py
+            relatorio_ia = gerar_analise_ia(unidade_id, vicios_selecionados, elo_dominante, score)
+            
+            st.header("📋 DOSSIÊ DE PREVISÃO (IA)")
+            st.markdown(relatorio_ia)
+            

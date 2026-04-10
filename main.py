@@ -3,6 +3,39 @@ import os
 import sys
 from datetime import datetime
 
+import google.generativeai as genai
+import os
+
+# Configuração da IA (A chave será lida do ambiente ou do código por enquanto)
+# Para facilitar agora, pode colar direto aqui, mas o ideal é o .env
+genai.configure(api_key="AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY")
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
+    # O "Contrato" de conduta da IA
+    prompt = f"""
+    Você é o Oráculo do Sistema OneThink, uma IA de análise de atrofia humana.
+    Analise a Unidade: {unidade_id}
+    Vícios detectados: {', '.join(vicios)}
+    Elo Dominante: {elo_dominante}
+    Índice de Atrofia: {score}/10.0
+
+    Com base na teoria dos 4 Elos (Necessidade, Medo, Prazer, Orgulho), gere um dossiê prevendo:
+    1. Como será a moradia e o ambiente dessa pessoa em 10 anos?
+    2. Qual o tipo de amizades e influências que a cercarão?
+    3. Qual o destino profissional inevitável se o índice de atrofia não for reduzido?
+    4. Qual o maior 'ponto cego' que ela não está vendo?
+
+    Seja direto, técnico e use um tom de diagnóstico sério.
+    """
+    
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"Erro ao conectar com o Oráculo: {str(e)}"
+    
+
 # CONFIGURAÇÕES DE SISTEMA
 DB_FILE = "database.json"
 
