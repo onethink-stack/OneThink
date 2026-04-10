@@ -15,7 +15,7 @@ except:
     chave = "AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY"
 
 genai.configure(api_key=chave)
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-pro')
 # --------------------------------------------------
 
 def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
