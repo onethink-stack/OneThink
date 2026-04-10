@@ -1,0 +1,26 @@
+[
+    {
+        "timestamp": "2026-04-10 13:43:01",
+        "id": "ALVO-TESTE",
+        "vicios": [
+            "V7",
+            "V12"
+        ],
+        "sinergias": [
+            "INÉRCIA ABSOLUTA"
+        ],
+        "atrofia_calculada": 2.25
+    },
+    {
+        "timestamp": "2026-04-10 13:49:43",
+        "id": "Julia-01",
+        "vicios": [
+            "V16",
+            "V25"
+        ],
+        "sinergias": [
+            "COLAPSO ESTRUTURAL"
+        ],
+        "atrofia_calculada": 3.24
+    }
+]
