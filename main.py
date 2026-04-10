@@ -9,7 +9,7 @@ import os
 # Configuração da IA (A chave será lida do ambiente ou do código por enquanto)
 # Para facilitar agora, pode colar direto aqui, mas o ideal é o .env
 genai.configure(api_key="AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY")
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
     # O "Contrato" de conduta da IA
