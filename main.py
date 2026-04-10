@@ -8,15 +8,76 @@ DB_FILE = "database.json"
 
 # DATABASE BRUTO DO SISTEMA ONETHINK
 VICIOS = {
-    "V7":  {"nome": "Preguiça", "atrofia": "FS4", "peso": 0.8},
-    "V12": {"nome": "Procrastinação", "atrofia": "A6", "peso": 0.7},
-    "V16": {"nome": "Ansiedade", "atrofia": "FS3", "peso": 0.9},
-    "V25": {"nome": "Hubris", "atrofia": "A5", "peso": 0.9}
+    # I. O ELO DA NECESSIDADE (Alvo: O Minerador)
+    "V26": {"nome": "Ignorância", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.7, "atrofia": "G1:E1"},
+    "V7":  {"nome": "Preguiça", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.8, "atrofia": "FS4"},
+    "V8":  {"nome": "Mentira", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.6, "atrofia": "G1"},
+    "V23": {"nome": "Credulidade", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.5, "atrofia": "G1"},
+    "V6":  {"nome": "Gula", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.7, "atrofia": "G1"},
+    "V11": {"nome": "Distração", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.9, "atrofia": "G1"},
+    "V24": {"nome": "Murmuração", "elo": "Necessidade", "alvo": "Minerador", "peso": 0.6, "atrofia": "G1"},
+
+    # II. O ELO DO MEDO (Alvo: O Cuidador/Educador)
+    "V13": {"nome": "Medo", "elo": "Medo", "alvo": "Educador", "peso": 0.9, "atrofia": "G2:E2"},
+    "V12": {"nome": "Procrastinação", "elo": "Medo", "alvo": "Educador", "peso": 0.7, "atrofia": "A6"},
+    "V14": {"nome": "Covardia", "elo": "Medo", "alvo": "Educador", "peso": 0.8, "atrofia": "G2"},
+    "V17": {"nome": "Nostalgia", "elo": "Medo", "alvo": "Educador", "peso": 0.5, "atrofia": "G2"},
+    "V21": {"nome": "Fanatismo", "elo": "Medo", "alvo": "Educador", "peso": 0.8, "atrofia": "G2"},
+    "V10": {"nome": "Maledicência", "elo": "Medo", "alvo": "Educador", "peso": 0.7, "atrofia": "G2"},
+    "V27": {"nome": "Ingratidão", "elo": "Medo", "alvo": "Educador", "peso": 0.6, "atrofia": "G2"},
+
+    # III. O ELO DO PRAZER (Alvo: O Regulador)
+    "V20": {"nome": "Vangloria", "elo": "Prazer", "alvo": "Regulador", "peso": 0.8, "atrofia": "G4:E4"},
+    "V5":  {"nome": "Luxúria", "elo": "Prazer", "alvo": "Regulador", "peso": 0.8, "atrofia": "G4"},
+    "V3":  {"nome": "Inveja", "elo": "Prazer", "alvo": "Regulador", "peso": 0.9, "atrofia": "G4"},
+    "V19": {"nome": "Impulsividade", "elo": "Prazer", "alvo": "Regulador", "peso": 0.7, "atrofia": "G4"},
+    "V15": {"nome": "Adulação", "elo": "Prazer", "alvo": "Regulador", "peso": 0.5, "atrofia": "G4"},
+    "V16": {"nome": "Ansiedade A.", "elo": "Prazer", "alvo": "Regulador", "peso": 0.9, "atrofia": "FS3"},
+    "V9":  {"nome": "Fofoca", "elo": "Prazer", "alvo": "Regulador", "peso": 0.6, "atrofia": "G4"},
+
+    # IV. O ELO DO ORGULHO (Alvo: O Explorador)
+    "V1":  {"nome": "Orgulho", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.9, "atrofia": "G6:E6"},
+    "V25": {"nome": "Hubris", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.9, "atrofia": "A5"},
+    "V22": {"nome": "Cinismo", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.7, "atrofia": "G6"},
+    "V18": {"nome": "Hipocrisia", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.8, "atrofia": "G6"},
+    "V4":  {"nome": "Avareza", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.8, "atrofia": "G6"},
+    "V2":  {"nome": "Ira", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.9, "atrofia": "FS1"},
+    "V28": {"nome": "Ressentimento", "elo": "Orgulho", "alvo": "Explorador", "peso": 0.9, "atrofia": "G6"}
 }
 
 SINERGIAS = {
+    # --- ELO DA NECESSIDADE (SOBREVIVÊNCIA) ---
     ("V7", "V12"): {"nome": "INÉRCIA ABSOLUTA", "mult": 1.5, "av": "A4-ARITMÉTICA"},
-    ("V16", "V25"): {"nome": "COLAPSO ESTRUTURAL", "mult": 1.8, "av": "A2-LÓGICA"}
+    ("V26", "V23"): {"nome": "ESTUPOR COLETIVO", "mult": 1.4, "av": "A3-FILOSOFIA"},
+    ("V8", "V24"): {"nome": "VITIMISMO TÓXICO", "mult": 1.3, "av": "A2-LÓGICA"},
+
+    # --- ELO DO MEDO (SOCIAL) ---
+    ("V13", "V6"): {"nome": "CONSUMISMO DE ESCAPE", "mult": 1.4, "av": "A1-JEJUM"},
+    ("V10", "V27"): {"nome": "ISOLAMENTO MALIGNO", "mult": 1.5, "av": "A6-GRATIDÃO"},
+
+    # --- ELO DO PRAZER (EGO/ALGORITMO) ---
+    ("V11", "V20"): {"nome": "VITRINE VAZIA", "mult": 1.6, "av": "A3-FILOSOFIA"},
+    ("V16", "V20"): {"nome": "ESCRAVIDÃO DA IMAGEM", "mult": 1.7, "av": "A5-AUTOESTIMA"},
+    ("V11", "V16", "V20"): {"nome": "LOOP DOPAMINÉRGICO", "mult": 2.0, "av": "A1-JEJUM DIGITAL"},
+
+    # --- ELO DO ORGULHO (ESPIRITUAL/HUBRIS) ---
+    ("V16", "V25"): {"nome": "COLAPSO ESTRUTURAL", "mult": 1.8, "av": "A2-LÓGICA"},
+    ("V1", "V3"): {"nome": "COMPLEXO DE NARCISO", "mult": 1.6, "av": "A6-HUMILDADE"},
+    ("V15", "V25"): {"nome": "CÂMARA DE ECO", "mult": 1.5, "av": "A2-DIALÉTICA"},
+    ("V2", "V28"): {"nome": "VINDITA CEGA", "mult": 1.9, "av": "A7-PERDÃO"},
+    ("V18", "V22"): {"nome": "DECOMPOSIÇÃO MORAL", "mult": 1.7, "av": "A3-ÉTICA"},
+    
+# --- PONTES ENTRE ELOS ---
+    ("V21", "V2"): {"nome": "FANATISMO AGRESSIVO", "mult": 1.6, "av": "A2-LÓGICA"},
+    ("V8", "V19"): {"nome": "FRAUDE SISTÊMICA", "mult": 1.5, "av": "A3-HONRA"},
+    
+    # --- O PERIGO MÁXIMO ---
+    ("V1", "V2", "V4", "V25"): {"nome": "TIRANIA DO EU", "mult": 2.5, "av": "A0-MORTE DO EGO"},
+
+    # --- SINERGIAS RESIDUAIS (OS PONTOS CEGOS) ---
+    ("V26", "V21"): {"nome": "OBSCURANTISMO", "mult": 1.5, "av": "A3-ESTUDO"},
+    ("V4", "V5"): {"nome": "MERCANTILIZAÇÃO DO SER", "mult": 1.6, "av": "A0-VALORES"},
+    ("V23", "V15"): {"nome": "CEGUEIRA INDUZIDA", "mult": 1.4, "av": "A2-CRÍTICA"}
 }
 
 def salvar_no_banco(dados_da_analise):

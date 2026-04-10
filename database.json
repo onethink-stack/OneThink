@@ -22,5 +22,36 @@
             "COLAPSO ESTRUTURAL"
         ],
         "atrofia_calculada": 3.24
+    },
+    {
+        "timestamp": "2026-04-10 18:03:01",
+        "id": "Helena - 1",
+        "vicios": [
+            "V11",
+            "V17",
+            "V20",
+            "V16"
+        ],
+        "sinergias": [],
+        "atrofia_calculada": 3.1
+    },
+    {
+        "timestamp": "2026-04-10 18:20:39",
+        "id": "Lucas - 1",
+        "vicios": [
+            "V24",
+            "V12",
+            "V21",
+            "V27",
+            "V20",
+            "V3",
+            "V1",
+            "V25",
+            "V18"
+        ],
+        "sinergias": [
+            "COMPLEXO DE NARCISO"
+        ],
+        "atrofia_calculada": 10.0
     }
 ]
