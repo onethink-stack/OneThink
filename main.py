@@ -2,14 +2,21 @@ import json
 import os
 import sys
 from datetime import datetime
-
+import streamlit as st  # Adicionamos este para ler os segredos da nuvem
 import google.generativeai as genai
-import os
 
-# Configuração da IA (A chave será lida do ambiente ou do código por enquanto)
-# Para facilitar agora, pode colar direto aqui, mas o ideal é o .env
-genai.configure(api_key="AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY")
+# --- CONFIGURAÇÃO HÍBRIDA DA IA (LOCAL VS NUVEM) ---
+try:
+    # Tenta ler do Secrets do Streamlit (quando o site estiver online)
+    chave = st.secrets["GEMINI_API_KEY"]
+except:
+    # Se der erro (no VS Code), ele usa esta chave manual abaixo
+    # Dica: No futuro, apague a chave daqui se o repositório for público!
+    chave = "AIzaSyBRDQZGLMc9UTPkVRV3W3y_0s8FgwSYwiY"
+
+genai.configure(api_key=chave)
 model = genai.GenerativeModel('gemini-1.5-flash-latest')
+# --------------------------------------------------
 
 def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
     # O "Contrato" de conduta da IA
@@ -34,7 +41,6 @@ def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
         return response.text
     except Exception as e:
         return f"Erro ao conectar com o Oráculo: {str(e)}"
-    
 
 # CONFIGURAÇÕES DE SISTEMA
 DB_FILE = "database.json"
