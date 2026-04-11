@@ -243,6 +243,61 @@ def analisar_unidade(unidade_id, vicios_input):
         "atrofia_calculada": final_score
     }
     
+# --- DICIONÁRIO DAS 7 ARTES (O ANTIVÍRUS PRÁTICO) ---
+# Aqui unimos o Trivium/Quadrivium à ação de quebra de Elo
+ARTES = {
+    "A1": {"nome": "Jejum/Abstinência (Gramática)", "efeito": "Quebra Elo de Prazer"},
+    "A2": {"nome": "Dialética/Lógica (Lógica)", "efeito": "Quebra Elo de Orgulho"},
+    "A3": {"nome": "Estudo/Filosofia (Retórica)", "efeito": "Aumenta Alcance de Percepção"},
+    "A4": {"nome": "Trabalho Braçal (Aritmética)", "efeito": "Ancoragem na Realidade"},
+    "A5": {"nome": "Autoexame (Geometria)", "efeito": "Identificação de Gatilhos e Limites"},
+    "A6": {"nome": "Contemplação/Beleza (Música)", "efeito": "Restauração de FS (Frequência)"},
+    "A7": {"nome": "Caridade Silenciosa (Astronomia)", "efeito": "Morte do Ego (Soberania)"}
+}
+
+# --- MOTOR DE SIMULAÇÃO 10^94 (A GRANDE LIGAÇÃO) ---
+def simulador_destino_total(g_local, g_soc, g_mon, vicios_selecionados):
+    # 1. Cálculo de Base (Ambiente + Poder)
+    gl = G_LOCAL[g_local]
+    forca_meio = gl['pa'] # Gravidade do ambiente (Chance de travamento)
+    alcance_inicial = g_soc # G-Social define o teto de ocupação
+    
+    # 2. Processamento de ELOs Ativos
+    elos_ativos = list(set([VICIOS[v]['elo'] for v in vicios_selecionados]))
+    
+    # 3. Lógica de Predição de Gatilhos (Triangulação de Matriz)
+    gatilho_predominante = ""
+    if "Medo" in elos_ativos and gl['rank'] <= 0.3:
+        gatilho_predominante = "Covardia por Sobrevivência (Inibição de FS)"
+    elif "Orgulho" in elos_ativos and g_mon >= 3:
+        gatilho_predominante = "Superioridade Ilusória (Rei do Poço)"
+    elif "Prazer" in elos_ativos and 0.4 <= gl['rank'] <= 0.6:
+        gatilho_predominante = "Compensação Dopaminérgica (Fuga do Real)"
+    else:
+        gatilho_predominante = "Inércia Mecânica (Seguidor)"
+
+    # 4. Cálculo do Antivírus (A Arte que quebra o Elo específico)
+    sugestao_arte = []
+    if "Prazer" in elos_ativos: 
+        sugestao_arte.append(ARTES["A1"])
+        sugestao_arte.append(ARTES["A6"])
+    if "Orgulho" in elos_ativos: 
+        sugestao_arte.append(ARTES["A2"])
+        sugestao_arte.append(ARTES["A7"])
+    if "Medo" in elos_ativos: 
+        sugestao_arte.append(ARTES["A5"])
+        sugestao_arte.append(ARTES["A3"])
+    if not sugestao_arte: # Caso padrão
+        sugestao_arte.append(ARTES["A4"])
+
+    return {
+        "gravidade_meio": f"{forca_meio * 100}%",
+        "gatilho_base": gatilho_predominante,
+        "previsao_ocupacao": G_SOCIAL[alcance_inicial]['nome'],
+        "artes_libertadoras": sugestao_arte,
+        "soberania_alcancavel": "Alta" if gl['rank'] >= 0.7 else "Baixa (Requer Mentor/Artes)"
+    }
+
     salvar_no_banco(pacote_analise)
     print(f"\n[SISTEMA]: Registro de {unidade_id} imortalizado.")
 
