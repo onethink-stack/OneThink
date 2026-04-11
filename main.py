@@ -44,6 +44,101 @@ def gerar_analise_ia(unidade_id, vicios, elo_dominante, score):
 # CONFIGURAÇÕES DE SISTEMA
 DB_FILE = "database.json"
 
+# --- MATRIZ DE CONTEXTO G (GRAUS DE ALCANCE) ---
+
+G_SOCIAL = {
+    1: {"nome": "Subsistência (Inércia)", "desc": "Visão limitada ao dia seguinte."},
+    2: {"nome": "Operacional Reativo", "desc": "Executa ordens, refém do meio."},
+    3: {"nome": "Técnico Especialista", "desc": "Ilusão de liberdade pelo saber técnico."},
+    4: {"nome": "Gestor de Manutenção", "desc": "Mantém o sistema que o escraviza."},
+    5: {"nome": "Estrategista Local", "desc": "Vê as peças do tabuleiro regional."},
+    6: {"nome": "Arquiteto de Sistemas", "desc": "Vê a corrupção e projeta saídas."},
+    7: {"nome": "Emissário (Visão Global)", "desc": "Consciência total do Plano."}
+}
+
+G_MONETARIO = {
+    1: {"nome": "Déficit", "desc": "Dependência total de terceiros."},
+    2: {"nome": "Equilíbrio Precário", "desc": "Um imprevisto destrói a estrutura."},
+    3: {"nome": "Conforto Relativo", "desc": "O 'Rei do Meio'. Gera Orgulho local."},
+    4: {"nome": "Segurança Estagnada", "desc": "Inércia pelo medo do risco de subir."},
+    5: {"nome": "Acúmulo de Poder", "desc": "Dinheiro usado como Artes ou Vício."},
+    6: {"nome": "Liberdade Geográfica", "desc": "O dinheiro descola a unidade do chão."},
+    7: {"nome": "Soberania (Capital Próprio)", "desc": "O dinheiro serve à ideia."}
+}
+
+G_SOCIAL_MONETARIO = {
+    1: {"nome": "Invisível", "desc": "Sem voz ou impacto no grupo."},
+    2: {"nome": "Seguidor", "desc": "Validado pela massa."},
+    3: {"nome": "Liderança de Bolha", "desc": "Pequeno poder que infla o Orgulho (E3)."},
+    4: {"nome": "Influenciador", "desc": "Gera necessidade nos outros."},
+    5: {"nome": "Detentor de Portas", "desc": "Quem decide quem entra e quem sai."},
+    6: {"nome": "Autoridade Reconhecida", "desc": "O nome precede a presença."},
+    7: {"nome": "Titã / Patriarca", "desc": "Cria as regras do jogo social."}
+}
+
+G_LOCAL = {
+    "G-L1": {"nome": "Zona de Conflito", "rank": 0.1, "pa": 0.98, "elo": "Medo (Sobrevivência)"},
+    "G-L2": {"nome": "Periferia Travada", "rank": 0.3, "pa": 0.85, "elo": "Necessidade (Inércia)"},
+    "G-L3": {"nome": "Classe Média Adaptada", "rank": 0.5, "pa": 0.70, "elo": "Prazer (Compensação)"},
+    "G-L4": {"nome": "Reduto de Status", "rank": 0.6, "pa": 0.65, "elo": "Orgulho (Superioridade)"},
+    "G-L5": {"nome": "Hub de Negócios", "rank": 0.7, "pa": 0.45, "elo": "Orgulho/Prazer (Pressa)"},
+    "G-L6": {"nome": "Bunker Controlado", "rank": 0.9, "pa": 0.15, "elo": "Nenhum (Proteção de FS)"},
+    "G-L7": {"nome": "Geodominância", "rank": 1.0, "pa": 0.05, "elo": "Soberania (Visão Global)"}
+}
+
+def calcular_entropia_social(g_local_id, g_mon_idx, score_vicios):
+    gl = G_LOCAL[g_local_id]
+    rank = gl['rank']
+    pa = gl['pa']
+    
+    fato_futuro = ""
+    analise_elo = ""
+    travas_detectadas = []
+
+    # 1. LÓGICA: O ABISMO (0.1 - 0.3)
+    if rank <= 0.3:
+        analise_elo = "ELO Predominante: Medo e Necessidade (Sobrevivência)."
+        fato_futuro = (
+            "SUBPRODUTO ESTATÍSTICO: A energia da unidade é 100% consumida pela geolocalização. "
+            "O ELO de Medo trava a imaginação; sem intervenção externa (mentor), "
+            "a unidade é incapaz de conceber uma saída."
+        )
+        travas_detectadas.append("T-Sobrevivência: Bloqueio de Cognição de Saída")
+
+    # 2. LÓGICA: O POÇO DE COMPENSAÇÃO (0.4 - 0.6)
+    elif 0.4 <= rank <= 0.6:
+        analise_elo = "ELO Predominante: Prazer e Orgulho (Compensação)."
+        # Cruzamento com G-Monetário (O Rei da Favela)
+        if g_mon_idx >= 3:
+            fato_futuro = (
+                "O REI DA FAVELA: G-Monetário alto para o local. "
+                "A unidade defenderá a própria gaiola pois o ranking dá a ilusão de vitória. "
+                "Risco máximo de V20 (Vangloria)."
+            )
+            travas_detectadas.append("T-Moral: Cristalização por Superioridade Intelectual")
+        else:
+            fato_futuro = (
+                "ESTAGNAÇÃO: A unidade usa o Prazer para não sentir a falta de movimento. "
+                "O ambiente 'confortável' é o maior inimigo da evolução."
+            )
+
+    # 3. LÓGICA: ZONA DE ESCAPE (0.7 - 1.0)
+    else:
+        analise_elo = "ELO em Atrofia: Alcance de Percepção Desbloqueado."
+        fato_futuro = (
+            "POTENCIAL OPERADOR: Necessidade física inexistente. "
+            "O travamento aqui ocorre apenas por Vontade Própria (Vícios Morais). "
+            "Tratar como Titã Concorrente ou Aliado Estratégico."
+        )
+
+    return {
+        "pa": f"{pa*100}%",
+        "elo": analise_elo,
+        "fato_futuro": fato_futuro,
+        "travas": travas_detectadas
+    }
+
+
 # DATABASE BRUTO DO SISTEMA ONETHINK
 VICIOS = {
     # I. O ELO DA NECESSIDADE (Alvo: O Minerador)
