@@ -1,9 +1,17 @@
 import streamlit as st
-# Importamos a nova função de IA que você colocou no main.py
-from main import analisar_unidade, VICIOS, SINERGIAS, G_LOCAL, G_SOCIAL, G_MONETARIO, G_SOCIAL_MONETARIO, calcular_entropia_social
+from main import (
+    analisar_unidade, 
+    VICIOS, 
+    SINERGIAS, 
+    G_LOCAL, 
+    G_SOCIAL, 
+    G_MONETARIO, 
+    G_SOCIAL_MONETARIO, 
+    calcular_entropia_social
+)
 
-# Configuração da página do site
-st.set_page_config(page_title="ONETHINK - Onisciência", page_icon="🧠", layout="centered")
+# Configuração da página
+st.set_page_config(page_title="OneThink Stack", page_icon="🔬")
 
 st.title("🧠 SISTEMA ONETHINK")
 st.subheader("Módulo de Diagnóstico de Atrofia")
