@@ -1,6 +1,6 @@
 import streamlit as st
 # Importamos a nova função de IA que você colocou no main.py
-from main import analisar_unidade, VICIOS, SINERGIAS, G_LOCAL, G_SOCIAL, G_MONETARIO, G_SOCIAL_MONETARIO, calcular_entropia_social, gerar_analise_ia
+from main import analisar_unidade, VICIOS, SINERGIAS, G_LOCAL, G_SOCIAL, G_MONETARIO, G_SOCIAL_MONETARIO, calcular_entropia_social
 
 # Configuração da página do site
 st.set_page_config(page_title="ONETHINK - Onisciência", page_icon="🧠", layout="centered")
@@ -105,4 +105,3 @@ if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
 
         st.write("---")
         st.caption("OneThink Stack v2.0 - Lógica de Entropia Social Ativa.")
-        

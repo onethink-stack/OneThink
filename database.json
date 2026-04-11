@@ -53,5 +53,27 @@
             "COMPLEXO DE NARCISO"
         ],
         "atrofia_calculada": 10.0
+    },
+    {
+        "timestamp": "2026-04-11 11:53:27",
+        "id": "Lucas - 2",
+        "vicios": [
+            "V1",
+            "V25",
+            "V4"
+        ],
+        "sinergias": [],
+        "atrofia_calculada": 2.6
+    },
+    {
+        "timestamp": "2026-04-11 11:59:05",
+        "id": "Elvo teste",
+        "vicios": [
+            "V26",
+            "V7",
+            "V8"
+        ],
+        "sinergias": [],
+        "atrofia_calculada": 2.1
     }
 ]

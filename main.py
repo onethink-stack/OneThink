@@ -247,6 +247,7 @@ def analisar_unidade(unidade_id, vicios_input):
     print(f"\n[SISTEMA]: Registro de {unidade_id} imortalizado.")
 
 if __name__ == "__main__":
+    print("OneThink Engine Ativo.")
     print("="*30)
     print(" SISTEMA ONETHINK: TERMINAL ")
     print("="*30)
