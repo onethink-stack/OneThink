@@ -8,7 +8,7 @@ from main import (
     G_MONETARIO, 
     G_SOCIAL_MONETARIO, 
     calcular_entropia_social,
-    simulador_destino_total  # <--- ADICIONE ELE AQUI
+    simulador_destino_total
 )
 
 # Configuração da página
