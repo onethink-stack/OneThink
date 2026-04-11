@@ -59,7 +59,7 @@ with col_g3:
                             format_func=lambda x: G_SOCIAL_MONETARIO[x]['nome'])
 
 # BOTÃO DE EXECUÇÃO
-        if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
+if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
             if not unidade_id or not vicios_selecionados:
                 st.error("⚠️ Por favor, preencha o ID e selecione ao menos um vício.")
             else:
@@ -137,4 +137,3 @@ with col_g3:
 
                 st.write("---")
                 st.caption("OneThink Stack v3.0 - Motor de Engenharia Social e Artes Liberais Ativo.")
-                
