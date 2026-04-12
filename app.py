@@ -164,6 +164,22 @@ if st.button("EXECUTAR DIAGNÓSTICO", type="primary"):
             for s in sinergias_encontradas:
                 st.markdown(f"- **{s['nome']}**: Antivírus Sugerido: `{s['av']}`")
 
+# --- PASSO 4: MONTE CARLO ---
+        st.write("---")
+        st.header("🎲 SIMULAÇÃO DE PROBABILIDADE ESTATÍSTICA")
+        
+        # Pega o Pa do cálculo de entropia que você já tem
+        pa_valor = float(entropia['pa'].replace('%', '')) / 100 
+        
+        if st.button("PROJETAR DESTINOS (MONTE CARLO)"):
+            stats = rodar_monte_carlo(score, pa_valor)
+            
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Probabilidade de Colapso", stats['prob_colapso'])
+            c2.metric("Probabilidade de Escape", stats['prob_escape'])
+            c3.metric("Resiliência da Unidade", stats['resiliencia'])
+            
+            st.info("💡 Este cálculo rodou 1.000 variações de 'Eventos de Mundo' sobre esta unidade isolada.")
+            
         st.write("---")
         st.caption("OneThink Stack v3.0 - Motor de Engenharia Social e Artes Liberais Ativo.")
-        
