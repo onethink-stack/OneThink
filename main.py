@@ -203,48 +203,61 @@ def salvar_no_banco(dados_da_analise):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(registros, f, indent=4, ensure_ascii=False)
 
-def analisar_unidade(unidade_id, vicios_input):
+def analisar_unidade(unidade_id, vicios_input, clima_mundo_ruido=0.5):
     print(f"\n--- RELATÓRIO ONETHINK: {unidade_id} ---")
     dano_total = 0
     sinergias_ativas = []
     
-    # Detecção de Sinergias
+    # 1. Detecção de Sinergias
     vicios_set = set(vicios_input)
     for par, info in SINERGIAS.items():
         if set(par).issubset(vicios_set):
             sinergias_ativas.append(info)
             
-    # Cálculo de Impacto
+    # 2. Cálculo de Impacto com Sinergia
     for v in vicios_input:
         if v in VICIOS:
             v_info = VICIOS[v]
             impacto = v_info['peso']
-            
             for s in sinergias_ativas:
                 impacto *= s['mult']
-                
-            print(f"[!] Vício: {v_info['nome']} | Alvo: {v_info['atrofia']} | Impacto: {impacto:.2f}")
+            
+            print(f"[!] Vício: {v_info['nome']} | Alvo: {v_info.get('atrofia', 'FS')} | Impacto: {impacto:.2f}")
             dano_total += impacto
 
+    # --- LÓGICA DE ANTECIPAÇÃO (O PULO DO BILHÃO) ---
+    velocidade = 1.0
     if sinergias_ativas:
-        print("\n--- SINERGIAS CRÍTICAS ---")
-        for s in sinergias_ativas:
-            print(f"⚠️ {s['nome']} detectada! Antivírus: {s['av']}")
+        velocidade = sum(s['mult'] for s in sinergias_ativas) / len(sinergias_ativas)
+    
+    final_score = round(min(dano_total * (1 + clima_mundo_ruido), 10.0), 2)
+    
+    previsao_72h = "ESTÁVEL"
+    if final_score > 7.5 and velocidade > 1.6:
+        previsao_72h = "🚨 RUPTURA IMINENTE (72H): Colapso de Identidade / Decisão Errática."
+    elif final_score > 5.0:
+        previsao_72h = "⚠️ DEGRADAÇÃO ACELERADA: Perda progressiva de Soberania."
+    else:
+        previsao_72h = "⚖️ EQUILÍBRIO PRECÁRIO: Unidade em estado de espera."
 
-    final_score = round(min(dano_total, 10.0), 2)
-    print(f"\nÍNDICE DE ATROFIA TOTAL: {final_score}/10.0")
-
-    # PREPARAÇÃO PARA PERSISTÊNCIA
     pacote_analise = {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "id": unidade_id,
         "vicios": vicios_input,
         "sinergias": [s['nome'] for s in sinergias_ativas],
-        "atrofia_calculada": final_score
+        "atrofia_calculada": final_score,
+        "tendencia_72h": previsao_72h,
+        "velocidade_exp": velocidade
     }
+
+    # PERSISTÊNCIA (Agora dentro da função para funcionar no Streamlit)
+    salvar_no_banco(pacote_analise)
+    print(f"\nÍNDICE DE ATROFIA TOTAL: {final_score}/10.0")
+    print(f"TENDÊNCIA 72H: {previsao_72h}")
     
-# --- DICIONÁRIO DAS 7 ARTES (O ANTIVÍRUS PRÁTICO) ---
-# Aqui unimos o Trivium/Quadrivium à ação de quebra de Elo
+    return pacote_analise 
+
+# --- DICIONÁRIO DAS 7 ARTES ---
 ARTES = {
     "A1": {"nome": "Jejum/Abstinência (Gramática)", "efeito": "Quebra Elo de Prazer"},
     "A2": {"nome": "Dialética/Lógica (Lógica)", "efeito": "Quebra Elo de Orgulho"},
@@ -255,17 +268,14 @@ ARTES = {
     "A7": {"nome": "Caridade Silenciosa (Astronomia)", "efeito": "Morte do Ego (Soberania)"}
 }
 
-# --- MOTOR DE SIMULAÇÃO 10^94 (A GRANDE LIGAÇÃO) ---
+# --- MOTOR DE SIMULAÇÃO 10^94 ---
 def simulador_destino_total(g_local, g_soc, g_mon, vicios_selecionados):
-    # 1. Cálculo de Base (Ambiente + Poder)
     gl = G_LOCAL[g_local]
-    forca_meio = gl['pa'] # Gravidade do ambiente (Chance de travamento)
-    alcance_inicial = g_soc # G-Social define o teto de ocupação
+    forca_meio = gl['pa'] 
+    alcance_inicial = g_soc 
     
-    # 2. Processamento de ELOs Ativos
-    elos_ativos = list(set([VICIOS[v]['elo'] for v in vicios_selecionados]))
+    elos_ativos = list(set([VICIOS[v]['elo'] for v in vicios_selecionados if v in VICIOS]))
     
-    # 3. Lógica de Predição de Gatilhos (Triangulação de Matriz)
     gatilho_predominante = ""
     if "Medo" in elos_ativos and gl['rank'] <= 0.3:
         gatilho_predominante = "Covardia por Sobrevivência (Inibição de FS)"
@@ -276,18 +286,14 @@ def simulador_destino_total(g_local, g_soc, g_mon, vicios_selecionados):
     else:
         gatilho_predominante = "Inércia Mecânica (Seguidor)"
 
-    # 4. Cálculo do Antivírus (A Arte que quebra o Elo específico)
     sugestao_arte = []
     if "Prazer" in elos_ativos: 
-        sugestao_arte.append(ARTES["A1"])
-        sugestao_arte.append(ARTES["A6"])
+        sugestao_arte.append(ARTES["A1"]); sugestao_arte.append(ARTES["A6"])
     if "Orgulho" in elos_ativos: 
-        sugestao_arte.append(ARTES["A2"])
-        sugestao_arte.append(ARTES["A7"])
+        sugestao_arte.append(ARTES["A2"]); sugestao_arte.append(ARTES["A7"])
     if "Medo" in elos_ativos: 
-        sugestao_arte.append(ARTES["A5"])
-        sugestao_arte.append(ARTES["A3"])
-    if not sugestao_arte: # Caso padrão
+        sugestao_arte.append(ARTES["A5"]); sugestao_arte.append(ARTES["A3"])
+    if not sugestao_arte: 
         sugestao_arte.append(ARTES["A4"])
 
     return {
@@ -298,26 +304,3 @@ def simulador_destino_total(g_local, g_soc, g_mon, vicios_selecionados):
         "soberania_alcancavel": "Alta" if gl['rank'] >= 0.7 else "Baixa (Requer Mentor/Artes)"
     }
 
-    salvar_no_banco(pacote_analise)
-    print(f"\n[SISTEMA]: Registro de {unidade_id} imortalizado.")
-
-if __name__ == "__main__":
-    print("OneThink Engine Ativo.")
-    print("="*30)
-    print(" SISTEMA ONETHINK: TERMINAL ")
-    print("="*30)
-    
-    # O programa para e espera você digitar o nome
-    nome_unidade = input("\n> Digite o ID da Unidade (ex: Alvo-01): ")
-    
-    # O programa espera você digitar os códigos
-    print("\nVícios disponíveis: V7, V12, V16, V25")
-    vicios_digitados = input("> Digite os códigos separados por vírgula (ex: V7, V12): ")
-    
-    # Esse comando limpa o que você digitou para o Python entender
-    lista_vicios = [v.strip().upper() for v in vicios_digitados.split(",")]
-    
-    # Agora ele chama a análise com o que VOCÊ escreveu
-    analisar_unidade(nome_unidade, lista_vicios)
-
-    
